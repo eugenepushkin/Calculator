@@ -76,7 +76,7 @@ button {
 
 .container-history::-webkit-scrollbar {
     width: 5px;
-    background-color: var(--color-white);
+    background-color: var(--color-black);
 }
 
 .container-history::-webkit-scrollbar-thumb {
