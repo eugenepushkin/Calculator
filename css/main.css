@@ -273,7 +273,7 @@ button.zero {
     color: var(--color-white);
 }
 
-@media (max-height: 600px) {
+@media (max-height: 800px) {
     html {
         margin: var(--indent-s) 0 var(--indent-s) 0;
         height: auto;
