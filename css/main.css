@@ -198,6 +198,7 @@ button.zero {
     border: 1px solid var(--color-black);
     border-radius: 5px;
     background-color: var(--color-bg);
+    color: var(--color-black);
     font-size: var(--fz-s);
     line-height: var(--fz-s);
     cursor: pointer;
@@ -227,9 +228,11 @@ button.zero {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0;
     gap: 7px;
     border-radius: 50%;
-    height: 40px;
+    width: var(--indent-xl);
+    height: var(--indent-xl);
     background-color: var(--color-item-bg);
 }
 

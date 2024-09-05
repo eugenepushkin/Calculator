@@ -110,6 +110,10 @@ function updateInput() {
 };
 
 function equal() {
+    if (inputPlace.value == '' && inputPlace.placeholder == 'Введите выражение') {
+        return ''
+    }
+
     if (inputPlace.value == '') {
         inputPlace.value = inputPlace.placeholder
     }
