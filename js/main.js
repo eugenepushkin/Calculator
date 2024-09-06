@@ -53,7 +53,7 @@ let closePar = 0;
 function updateInput() {
     let maxLength = 30;
 
-    if (inputPlace.value == '' && operatorsAll.includes(this.textContent)) {
+    if (inputPlace.value == '' && operatorsAll.includes(this.textContent) && inputPlace.placeholder != 'Введите выражение') {
         inputPlace.value = inputPlace.placeholder
     }
 
@@ -76,6 +76,10 @@ function updateInput() {
         }
     }
 
+    if (inputPlace.value[0] == '+') {
+        inputPlace.value = inputPlace.value.substr(1)
+    }
+
     if (this.textContent == '(') {
         openPar++
     }     
@@ -89,18 +93,21 @@ function updateInput() {
 
     if (inputPlace.value.length > maxLength) {}
     else if (!arrNums.includes(this.textContent) && inputPlace.value[inputPlace.value.length - 1] == '.') {}
-    else if (this.textContent == ')' && closePar > openPar) {closePar--;}
-    else if (this.textContent == '(' && !operatorsAll.includes(inputPlace.value[inputPlace.value.length - 1]) && inputPlace.value[inputPlace.value.length - 1] != '(') {openPar--;}
-    else if (this.textContent == ')' && inputPlace.value[inputPlace.value.length - 1] == '(') {closePar--;}
-    else if (this.textContent == '(' && inputPlace.value[inputPlace.value.length - 1] == ')') {openPar--}
-    else if (this.textContent == '(' && arrNums.includes(inputPlace.value[inputPlace.value.length - 1])) {openPar--}
-    else if (this.textContent == ')' && !arrNums.includes(inputPlace.value[inputPlace.value.length - 1]) && inputPlace.value[inputPlace.value.length - 1] != ')') {closePar--;}
+    else if (this.textContent == ')' && closePar > openPar) closePar--
+    else if (this.textContent == '(' && !operatorsAll.includes(inputPlace.value[inputPlace.value.length - 1]) && inputPlace.value[inputPlace.value.length - 1] != '(') openPar--
+    else if (this.textContent == ')' && inputPlace.value[inputPlace.value.length - 1] == '(') closePar--
+    else if (this.textContent == '(' && inputPlace.value[inputPlace.value.length - 1] == ')') openPar--
+    else if (this.textContent == '(' && arrNums.includes(inputPlace.value[inputPlace.value.length - 1])) openPar--
+    else if (this.textContent == ')' && !arrNums.includes(inputPlace.value[inputPlace.value.length - 1]) && inputPlace.value[inputPlace.value.length - 1] != ')') closePar--
     else if (this.textContent == '.' && inputPlace.value[inputPlace.value.length - 1] == ')') {}
-    else if (inputPlace.value[inputPlace.value.length - 1] == ')' && arrNums.includes(this.textContent)) {openPar--}
+    else if (inputPlace.value[inputPlace.value.length - 1] == ')' && arrNums.includes(this.textContent)) openPar--
     else if (inputPlace.value[inputPlace.value.length - 1] == '(' && ['+', '*', '/', '%'].includes(this.textContent)) {}
     else if (inputPlace.value == '' && this.textContent != '-' && this.textContent != '.' && this.textContent != '(' && !arrNums.includes(this.textContent)) {}
     else if (arrNums.includes(inputPlace.value[inputPlace.value.length - 1]) && this.textContent == '(') {}
-    else if (operatorsAll.includes(this.textContent) && operatorsAll.includes(inputPlace.value[inputPlace.value.length - 1])) {}
+    else if (operatorsAll.includes(this.textContent) && operatorsAll.includes(inputPlace.value[inputPlace.value.length - 1])) {
+        inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1);
+        inputPlace.value += this.textContent;
+    }
     else inputPlace.value += this.textContent;
 
     if (closePar == openPar) {
@@ -231,9 +238,13 @@ function equal() {
 };
 
 function clear() {
-    openPar = 0;
-    closePar = 0;
-    inputPlace.value = '';
+    if (inputPlace.value[inputPlace.value.length - 1] == '(') {
+        openPar--
+    } else if (inputPlace.value[inputPlace.value.length - 1] == ')') {
+        closePar--
+    }
+
+    inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1)
     inputPlace.placeholder = 'Введите выражение';
 };
 
@@ -245,10 +256,41 @@ function clearAll() {
 };
 
 function changeSign() {
-    equal();
-    inputPlace.value = inputPlace.placeholder;
-    if (inputPlace.value == '-') {return ''}
-    inputPlace.value = +inputPlace.value * -1;
+    if (inputPlace.value == '') {
+        inputPlace.value = inputPlace.placeholder
+    }    
+
+    if (inputPlace.value =='' && inputPlace.placeholder == 'Введите выражение') return ''
+
+    if (inputPlace.value != '') {
+        for (let i = inputPlace.value.length - 1; !operatorsAll.includes(inputPlace.value[i]) && i >= 0; i--) {
+            if (inputPlace.value[i-1] == '+') {
+                inputPlace.value = inputPlace.value.substr(0, i - 1) + '-' + inputPlace.value.substr(i)
+            } else if (inputPlace.value[i-1] == '-') {
+                inputPlace.value = inputPlace.value.substr(0, i - 1) + '+' + inputPlace.value.substr(i)
+            } else if (inputPlace.value[i-1] == '*') {
+                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + ')'
+            } else if (inputPlace.value[i-1] == '/') {
+                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + ')'
+            } else if (inputPlace.value[i-1] == '%') {
+                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + ')'
+            }  else if (inputPlace.value[i-1] == '(') {
+                inputPlace.value = inputPlace.value.substr(0, i) + '-' + inputPlace.value.substr(i)
+            } else if (arrNums.includes(inputPlace.value[0]) && i == 0) {
+                inputPlace.value = '-' + inputPlace.value.substr(0)
+            }
+        };
+
+        for (let k = 0; k < inputPlace.value.length; k++) {
+            if (inputPlace.value[k] == '(' && inputPlace.value[k+1] == '+') {
+                inputPlace.value = inputPlace.value.substr(0, k) + inputPlace.value.slice(k + 2, inputPlace.value.length - 1)
+            }
+        }
+
+        if (inputPlace.value[0] == '+') {
+            inputPlace.value = inputPlace.value.substr(1)
+        }
+    }
 }
 
 function addHandler() {

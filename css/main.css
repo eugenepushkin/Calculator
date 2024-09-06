@@ -158,6 +158,10 @@ input {
     text-align: right;
 }
 
+input::placeholder {
+    color: var(--color-black);
+}
+
 select:focus-visible {
     outline: none;
 }
