@@ -1,3 +1,0 @@
-export const arrNums = ['0','1','2','3','4','5','6','7','8','9'];
-export const arrAll = ['0','1','2','3','4','5','6','7','8','9','.'];
-export const operatorsAll = ['+', '-', '*', '/', '%'];

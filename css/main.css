@@ -22,7 +22,7 @@ html {
     --color-gray: #505050;
     --color-item-bg: #f1b32d;
     --color-burger-bg: #61616180;
-    --font-family: "Kanit", system-ui;
+    --font-family-s: "Kanit", system-ui;
     --fz-s: 16px;
     --fz-m: 18px;
     --fz-l: 20px;
@@ -38,7 +38,7 @@ body {
     flex-direction: row;
     gap: var(--indent-s);
     background-color: var(--color-bg);
-    font-family: var(--font-family);
+    font-family: var(--font-family-s);
 }
 
 .index-main {
@@ -51,7 +51,7 @@ body {
 button {
     border: none;
     color: var(--color-black); 
-    font-family: var(--font-family);
+    font-family: var(--font-family-s);
     transition: .3s;
 }
 
@@ -148,10 +148,10 @@ form {
 input {
     width: 100%;
     height: 40px;
-    padding: 0 var(--indent-m) 0 var(--indent-m);
+    padding: 0 var(--indent-m);
     border: none;
     border-radius: var(--border-radius);
-    font-family: var(--font-family);
+    font-family: var(--font-family-s);
     font-size: var(--fz-m);
     line-height: var(--fz-m);
     outline: none;

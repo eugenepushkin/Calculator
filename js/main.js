@@ -1,175 +1,147 @@
-import { arrNums, arrAll, operatorsAll } from './constants.js'
+import { collectionOfNumbers, collectionOfNumbersWithDot, collectionOfOperators, operators, operatorsWithExpressions, openingParenthesis, closingParenthesis } from './constants/index.js';
+import physicalKeyboard from './keyboard.js';
 
+export const equalBtn = document.querySelector('.equal');
+export const zero = document.querySelector('.zero');
+export const one = document.querySelector('.one');
+export const two = document.querySelector('.two');
+export const three = document.querySelector('.three');
+export const four = document.querySelector('.four');
+export const five = document.querySelector('.five');
+export const six = document.querySelector('.six');
+export const seven = document.querySelector('.seven');
+export const eight = document.querySelector('.eight');
+export const nine = document.querySelector('.nine');
+export const remainder = document.querySelector('.remainder');
+export const division = document.querySelector('.division');
+export const multiplication = document.querySelector('.mult');
+export const minus = document.querySelector('.minus');
+export const plus = document.querySelector('.plus');
+export const open = document.querySelector('.open');
+export const close = document.querySelector('.close');
+export const dot = document.querySelector('.dot');
 const inputPlace = document.querySelector("input");
 const plusMinusBtn = document.querySelector('.plus-minus');
 const clearBtn = document.querySelector('.clear');
-const equalBtn = document.querySelector('.equal');
 const clearAllBtn = document.querySelector('.clear-all');
-const zero = document.querySelector('.zero');
-const one = document.querySelector('.one');
-const two = document.querySelector('.two');
-const three = document.querySelector('.three');
-const four = document.querySelector('.four');
-const five = document.querySelector('.five');
-const six = document.querySelector('.six');
-const seven = document.querySelector('.seven');
-const eight = document.querySelector('.eight');
-const nine = document.querySelector('.nine');
-const remainder = document.querySelector('.remainder');
-const division = document.querySelector('.division');
-const mult = document.querySelector('.mult');
-const minus = document.querySelector('.minus');
-const plus = document.querySelector('.plus');
-const open = document.querySelector('.open');
-const close = document.querySelector('.close');
-const dot = document.querySelector('.dot');
 
-
-document.onkeypress = function (event) {
-    if (event.keyCode == '48') zero.click()
-    else if (event.keyCode == '49') one.click()
-    else if (event.keyCode == '50') two.click()
-    else if (event.keyCode == '51') three.click()
-    else if (event.keyCode == '52') four.click()
-    else if (event.keyCode == '53') five.click()
-    else if (event.keyCode == '54') six.click()
-    else if (event.keyCode == '55') seven.click()
-    else if (event.keyCode == '56') eight.click()
-    else if (event.keyCode == '57') nine.click()
-    else if (event.keyCode == '46') dot.click()
-    else if (event.keyCode == '13') equalBtn.click()
-    else if (event.keyCode == '45') minus.click()
-    else if (event.keyCode == '43') plus.click()
-    else if (event.keyCode == '42') mult.click()
-    else if (event.keyCode == '47') division.click()
-    else if (event.keyCode == '37') remainder.click()
-    else if (event.keyCode == '40') open.click()
-    else if (event.keyCode == '41') close.click()
-}
+document.onkeypress = physicalKeyboard;
 
 let openPar = 0;
 let closePar = 0;
 
 function updateInput() {
     let maxLength = 30;
+    let lastValue = inputPlace.value[inputPlace.value.length - 1];
+    let thisValue = this.textContent;
 
-    if (inputPlace.value == '' && operatorsAll.includes(this.textContent) && inputPlace.placeholder != 'Введите выражение') {
-        inputPlace.value = inputPlace.placeholder
-    }
+    if (inputPlace.value == '' && collectionOfOperators.includes(thisValue) && inputPlace.placeholder != 'Enter expression') {
+        inputPlace.value = inputPlace.placeholder;
+    };
 
-    if (this.textContent == '.' && inputPlace.value != '') {
+    if (thisValue == '.' && inputPlace.value != '') {
         let count = 0;
         let arrOfStr = [];
 
-        for (let i = inputPlace.value.length - 1; !operatorsAll.includes(inputPlace.value[i]) && i > 0; i--) {
-            arrOfStr.push(inputPlace.value[i])
+        for (let i = inputPlace.value.length - 1; !collectionOfOperators.includes(inputPlace.value[i]) && i > 0; i--) {
+            arrOfStr.push(inputPlace.value[i]);
         };
 
         for (let k = 0; k < arrOfStr.length; k++) {
             if (arrOfStr[k] == '.') {
-                count++
+                count++;
             }
-        } 
+        };
 
         if (count > 0) { 
             return '' 
-        }
-    }
+        };
+    };
 
     if (inputPlace.value[0] == '+') {
-        inputPlace.value = inputPlace.value.substr(1)
-    }
+        inputPlace.value = inputPlace.value.substr(1);
+    };
 
-    if (this.textContent == '(') {
-        openPar++
-    }     
-    else if (this.textContent == ')') {
-        closePar++
-    }
+    if (thisValue == openingParenthesis) {
+        openPar++;
+    } else if (thisValue == closingParenthesis) {
+        closePar++;
+    };
 
     if (inputPlace.value == 'NaN') {
-        inputPlace.value == ''
-    }
+        inputPlace.value == '';
+    };
 
     if (inputPlace.value.length > maxLength) {}
-    else if (!arrNums.includes(this.textContent) && inputPlace.value[inputPlace.value.length - 1] == '.') {}
-    else if (this.textContent == ')' && closePar > openPar) closePar--
-    else if (this.textContent == '(' && !operatorsAll.includes(inputPlace.value[inputPlace.value.length - 1]) && inputPlace.value[inputPlace.value.length - 1] != '(') openPar--
-    else if (this.textContent == ')' && inputPlace.value[inputPlace.value.length - 1] == '(') closePar--
-    else if (this.textContent == '(' && inputPlace.value[inputPlace.value.length - 1] == ')') openPar--
-    else if (this.textContent == '(' && arrNums.includes(inputPlace.value[inputPlace.value.length - 1])) openPar--
-    else if (this.textContent == ')' && !arrNums.includes(inputPlace.value[inputPlace.value.length - 1]) && inputPlace.value[inputPlace.value.length - 1] != ')') closePar--
-    else if (this.textContent == '.' && inputPlace.value[inputPlace.value.length - 1] == ')') {}
-    else if (inputPlace.value[inputPlace.value.length - 1] == ')' && arrNums.includes(this.textContent)) openPar--
-    else if (inputPlace.value[inputPlace.value.length - 1] == '(' && ['+', '*', '/', '%'].includes(this.textContent)) {}
-    else if (inputPlace.value == '' && this.textContent != '-' && this.textContent != '.' && this.textContent != '(' && !arrNums.includes(this.textContent)) {}
-    else if (arrNums.includes(inputPlace.value[inputPlace.value.length - 1]) && this.textContent == '(') {}
-    else if (operatorsAll.includes(this.textContent) && operatorsAll.includes(inputPlace.value[inputPlace.value.length - 1])) {
+    else if (!collectionOfNumbers.includes(thisValue) && lastValue == '.') {}
+    else if (thisValue == closingParenthesis && closePar > openPar) closePar--
+    else if (thisValue == openingParenthesis && !collectionOfOperators.includes(lastValue) && lastValue != openingParenthesis) openPar--
+    else if (thisValue == closingParenthesis && lastValue == openingParenthesis) closePar--
+    else if (thisValue == openingParenthesis && lastValue == closingParenthesis) openPar--
+    else if (thisValue == openingParenthesis && collectionOfNumbers.includes(lastValue)) openPar--
+    else if (thisValue == closingParenthesis && !collectionOfNumbers.includes(lastValue) && lastValue != closingParenthesis) closePar--
+    else if (thisValue == '.' && lastValue == closingParenthesis) {}
+    else if (lastValue == closingParenthesis && collectionOfNumbers.includes(thisValue)) openPar--
+    else if (lastValue == openingParenthesis && ['+', '*', '/', '%'].includes(thisValue)) {}
+    else if (inputPlace.value == '' && thisValue != '-' && thisValue != '.' && thisValue != openingParenthesis && !collectionOfNumbers.includes(thisValue)) {}
+    else if (collectionOfNumbers.includes(lastValue) && thisValue == openingParenthesis) {}
+    else if (collectionOfOperators.includes(thisValue) && collectionOfOperators.includes(lastValue)) {
         inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1);
-        inputPlace.value += this.textContent;
-    }
-    else inputPlace.value += this.textContent;
+        inputPlace.value += thisValue;
+    } else inputPlace.value += thisValue;
 
     if (closePar == openPar) {
         openPar = 0;
         closePar = 0;
-    }
+    };
 };
 
 function equal() {
-    if (inputPlace.value == '' && inputPlace.placeholder == 'Введите выражение') {
+    if (inputPlace.value == '' && inputPlace.placeholder == 'Enter expression') {
         return ''
-    }
+    };
 
     if (inputPlace.value == '') {
-        inputPlace.value = inputPlace.placeholder
-    }
+        inputPlace.value = inputPlace.placeholder;
+    };
 
     let input = inputPlace.value;
     let revPolsNot = [];
     let stack = [];
 
-    const operators = {
-        '+': 0,
-        '-': 0,
-        '*': 1,
-        '/': 1,
-        '%': 1
-    };
-
     let arr = [];
     let newArr = [];
 
     for (let i = 0; i < input.length; i++) {
-        if (input[i] == '(' && input[i+1] == '-') {
-            input = input.substr(0, i + 1) + '0' +  input.substr(i + 1)
-        }
-    }
+        if (input[i] == openingParenthesis && input[i+1] == '-') {
+            input = input.substr(0, i + 1) + '0' +  input.substr(i + 1);
+        };
+    };
 
-    if (openPar != 0 && closePar != 0 && openPar != closePar) { 
-        alert('Закончите выражение!')
+    if (openPar != 0 && openPar != closePar) { 
+        alert('Complete the expression!');
         return ''
-    }
+    };
 
     if (input[0] == '-') {
         arr.push('0');
         arr.push(' ');
-    }
+    };
 
-    if (operatorsAll.includes(input[input.length - 1])) {
-        input = input.substr(0, input.length - 1)
-    }
+    if (collectionOfOperators.includes(input[input.length - 1])) {
+        input = input.substr(0, input.length - 1);
+    };
 
-    if (inputPlace.value == '-') {return ''}
+    if (inputPlace.value == '-') return '';
 
     for (let i = 0; i < input.length; i++) {
         arr.push(input[i]);
-        if (!arrAll.includes(input[i + 1]) && i < input.length - 1) {
-            arr.push(' ')
-        } else if (!arrAll.includes(input[i]) && arrAll.includes(input[i + 1]) && i < input.length - 1) {
-            arr.push(' ')
-        }
-    }
+        if (!collectionOfNumbersWithDot.includes(input[i + 1]) && i < input.length - 1) {
+            arr.push(' ');
+        } else if (!collectionOfNumbersWithDot.includes(input[i]) && collectionOfNumbersWithDot.includes(input[i + 1]) && i < input.length - 1) {
+            arr.push(' ');
+        };
+    };
 
     newArr = arr.join('').split(' ');
 
@@ -178,17 +150,17 @@ function equal() {
 
         if (/[0-9]/.test(char)) {
             revPolsNot.push(char);
-        } else if (char == '(') {
+        } else if (char == openingParenthesis) {
             stack.push(char);
-        } else if (char == ')') {
+        } else if (char == closingParenthesis) {
             let fromStack = stack.pop();
 
-            while (fromStack != ('(')) {
+            for (let i = stack.length; fromStack != (openingParenthesis) && i > 0; i--) {
                 revPolsNot.push(fromStack);
                 fromStack = stack.pop();
             };
         } else if (Object.keys(operators).includes(char)) {
-            while (operators[stack.slice(-1)] >= operators[char]) {
+            for (let i = stack.length; operators[stack.slice(-1)] >= operators[char] && i > 0; i--) {
                 revPolsNot.push(stack.pop());
             };
 
@@ -198,20 +170,13 @@ function equal() {
 
     let fromStackOut = '';
 
-    while (fromStackOut = stack.pop()) {
+    for (let i = stack.length; i > 0; i--) {
+        fromStackOut = stack.pop();
         revPolsNot.push(fromStackOut);
     };
 
     function rpnToNormal(expression) {
         const stack = [];
-
-        const operators = {
-          '+': (a, b) => a + b,
-          '-': (a, b) => a - b,
-          '*': (a, b) => a * b,
-          '/': (a, b) => a / b,
-          '%': (a, b) => a % b
-        };
 
         for (let token of expression) {
             if (isNumber(token)) {
@@ -219,7 +184,7 @@ function equal() {
             } else {
                 const operand2 = stack.pop();
                 const operand1 = stack.pop();
-                const operator = operators[token];
+                const operator = operatorsWithExpressions[token];
                 stack.push(operator(operand1, operand2));
             };
         };
@@ -234,64 +199,64 @@ function equal() {
 
     inputPlace.value = '';
 
-    inputPlace.placeholder = +res.toFixed(3);
+    inputPlace.placeholder = +Number(res).toFixed(3);
 };
 
 function clear() {
-    if (inputPlace.value[inputPlace.value.length - 1] == '(') {
-        openPar--
-    } else if (inputPlace.value[inputPlace.value.length - 1] == ')') {
-        closePar--
+    if (inputPlace.value[inputPlace.value.length - 1] == openingParenthesis) {
+        openPar--;
+    } else if (inputPlace.value[inputPlace.value.length - 1] == closingParenthesis) {
+        closePar--;
     }
 
-    inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1)
-    inputPlace.placeholder = 'Введите выражение';
+    inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1);
+    inputPlace.placeholder = 'Enter expression';
 };
 
 function clearAll() {
     openPar = 0;
     closePar = 0;
     inputPlace.value = '';
-    inputPlace.placeholder = 'Введите выражение';
+    inputPlace.placeholder = 'Enter expression';
 };
 
 function changeSign() {
     if (inputPlace.value == '') {
-        inputPlace.value = inputPlace.placeholder
-    }    
+        inputPlace.value = inputPlace.placeholder;
+    };
 
-    if (inputPlace.value =='' && inputPlace.placeholder == 'Введите выражение') return ''
+    if (inputPlace.value =='' && inputPlace.placeholder == 'Enter expression') return '';
 
     if (inputPlace.value != '') {
-        for (let i = inputPlace.value.length - 1; !operatorsAll.includes(inputPlace.value[i]) && i >= 0; i--) {
+        for (let i = inputPlace.value.length - 1; !collectionOfOperators.includes(inputPlace.value[i]) && i >= 0; i--) {
             if (inputPlace.value[i-1] == '+') {
-                inputPlace.value = inputPlace.value.substr(0, i - 1) + '-' + inputPlace.value.substr(i)
+                inputPlace.value = inputPlace.value.substr(0, i - 1) + '-' + inputPlace.value.substr(i);
             } else if (inputPlace.value[i-1] == '-') {
-                inputPlace.value = inputPlace.value.substr(0, i - 1) + '+' + inputPlace.value.substr(i)
+                inputPlace.value = inputPlace.value.substr(0, i - 1) + '+' + inputPlace.value.substr(i);
             } else if (inputPlace.value[i-1] == '*') {
-                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + ')'
+                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + closingParenthesis;
             } else if (inputPlace.value[i-1] == '/') {
-                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + ')'
+                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + closingParenthesis;
             } else if (inputPlace.value[i-1] == '%') {
-                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + ')'
-            }  else if (inputPlace.value[i-1] == '(') {
-                inputPlace.value = inputPlace.value.substr(0, i) + '-' + inputPlace.value.substr(i)
-            } else if (arrNums.includes(inputPlace.value[0]) && i == 0) {
-                inputPlace.value = '-' + inputPlace.value.substr(0)
-            }
+                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + closingParenthesis;
+            }  else if (inputPlace.value[i-1] == openingParenthesis) {
+                inputPlace.value = inputPlace.value.substr(0, i) + '-' + inputPlace.value.substr(i);
+            } else if (collectionOfNumbers.includes(inputPlace.value[0]) && i == 0) {
+                inputPlace.value = '-' + inputPlace.value.substr(0);
+            };
         };
 
         for (let k = 0; k < inputPlace.value.length; k++) {
-            if (inputPlace.value[k] == '(' && inputPlace.value[k+1] == '+') {
-                inputPlace.value = inputPlace.value.substr(0, k) + inputPlace.value.slice(k + 2, inputPlace.value.length - 1)
-            }
-        }
+            if (inputPlace.value[k] == openingParenthesis && inputPlace.value[k+1] == '+') {
+                inputPlace.value = inputPlace.value.substr(0, k) + inputPlace.value.slice(k + 2, inputPlace.value.length - 1);
+            };
+        };
 
         if (inputPlace.value[0] == '+') {
-            inputPlace.value = inputPlace.value.substr(1)
-        }
-    }
-}
+            inputPlace.value = inputPlace.value.substr(1);
+        };
+    };
+};
 
 function addHandler() {
     zero.addEventListener("click", updateInput);
@@ -306,7 +271,7 @@ function addHandler() {
     nine.addEventListener("click", updateInput);
     remainder.addEventListener("click", updateInput);
     division.addEventListener("click", updateInput);
-    mult.addEventListener("click", updateInput);
+    multiplication.addEventListener("click", updateInput);
     minus.addEventListener("click", updateInput);
     plus.addEventListener("click", updateInput);
     open.addEventListener("click", updateInput);
