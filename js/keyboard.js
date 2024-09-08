@@ -1,64 +1,64 @@
 import { keyCodes } from './constants/keys.js'
-import { zero, one, two, three, four, five, six, seven, eight, nine, dot, equalBtn, minus, plus, multiplication, division, remainder, open, close } from './main.js'
+import * as buttons from './main.js'
 
 export default function physicalKeyboard(event) {
     switch(event.keyCode) {
         case keyCodes.zeroKeyCode: 
-            zero.click();
+            buttons.zero.click();
             break;
         case keyCodes.oneKeyCode: 
-            one.click();
+            buttons.one.click();
             break;    
         case keyCodes.twoKeyCode: 
-            two.click();
+            buttons.two.click();
             break;      
         case keyCodes.threeKeyCode: 
-            three.click();
+            buttons.three.click();
             break; 
         case keyCodes.fourKeyCode: 
-            four.click();
+            buttons.four.click();
             break; 
         case keyCodes.fiveKeyCode: 
-            five.click();
+            buttons.five.click();
             break; 
         case keyCodes.sixKeyCode: 
-            six.click();
+            buttons.six.click();
             break; 
         case keyCodes.sevenKeyCode: 
-            seven.click();
+            buttons.seven.click();
             break; 
         case keyCodes.eightKeyCode: 
-            eight.click();
+            buttons.eight.click();
             break; 
         case keyCodes.nineKeyCode: 
-            nine.click();
+            buttons.nine.click();
             break; 
         case keyCodes.dotKeyCode: 
-            dot.click();
+            buttons.dot.click();
             break; 
         case keyCodes.enterKeyCode: 
-            equalBtn.click();
+            buttons.equalBtn.click();
             break; 
         case keyCodes.minusKeyCode: 
-            minus.click();
+            buttons.minus.click();
             break; 
         case keyCodes.plusKeyCode: 
-            plus.click();
+            buttons.plus.click();
             break;
         case keyCodes.multiplicationKeyCode: 
-            multiplication.click();
+            buttons.multiplication.click();
             break;
         case keyCodes.divisionKeyCode: 
-            division.click();
+            buttons.division.click();
             break;
         case keyCodes.remainderKeyCode: 
-            remainder.click();
+            buttons.remainder.click();
             break;
         case keyCodes.openingParenthesisKeyCode: 
-            open.click();
+            buttons.open.click();
             break;
         case keyCodes.closingParenthesisKeyCode: 
-            close.click();
+            buttons.close.click();
             break;
     }
 }

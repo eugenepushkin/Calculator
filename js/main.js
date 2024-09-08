@@ -1,4 +1,9 @@
-import { collectionOfNumbers, collectionOfNumbersWithDot, collectionOfOperators, operators, operatorsWithExpressions, openingParenthesis, closingParenthesis } from './constants/index.js';
+import { collectionOfNumbers, collectionOfNumbersWithDot, openingBracket, closingBracket } from './constants/index.js';
+import { operators, operatorsWithExpressions, collectionOfOperators, defaultOperators } from './constants/operators.js';
+import { floatingDot, minusSign, plusSign, multiSign, divisionSign, remainderSign }  from './constants/signs.js';
+import { regCollectionOfNumbers } from './constants/regular.js';
+import { emptyValue, spaceValue, zeroValue, nanValue } from './constants/empty.js';
+import { defaultExpression } from './constants/expression.js';
 import physicalKeyboard from './keyboard.js';
 
 export const equalBtn = document.querySelector('.equal');
@@ -24,22 +29,23 @@ const inputPlace = document.querySelector("input");
 const plusMinusBtn = document.querySelector('.plus-minus');
 const clearBtn = document.querySelector('.clear');
 const clearAllBtn = document.querySelector('.clear-all');
+const expressionError = document.getElementById('expression-error')
 
 document.onkeypress = physicalKeyboard;
 
-let openPar = 0;
-let closePar = 0;
+let openingBracketCount = 0;
+let closingBracketCount = 0;
 
 function updateInput() {
     let maxLength = 30;
     let lastValue = inputPlace.value[inputPlace.value.length - 1];
     let thisValue = this.textContent;
 
-    if (inputPlace.value == '' && collectionOfOperators.includes(thisValue) && inputPlace.placeholder != 'Enter expression') {
+    if (inputPlace.value == emptyValue && collectionOfOperators.includes(thisValue) && inputPlace.placeholder != defaultExpression) {
         inputPlace.value = inputPlace.placeholder;
     };
 
-    if (thisValue == '.' && inputPlace.value != '') {
+    if (thisValue == floatingDot && inputPlace.value != emptyValue) {
         let count = 0;
         let arrOfStr = [];
 
@@ -48,60 +54,59 @@ function updateInput() {
         };
 
         for (let k = 0; k < arrOfStr.length; k++) {
-            if (arrOfStr[k] == '.') {
+            if (arrOfStr[k] == floatingDot) {
                 count++;
             }
         };
 
         if (count > 0) { 
-            return '' 
+            return emptyValue
         };
     };
 
-    if (inputPlace.value[0] == '+') {
+    if (inputPlace.value[0] == plusSign) {
         inputPlace.value = inputPlace.value.substr(1);
     };
 
-    if (thisValue == openingParenthesis) {
-        openPar++;
-    } else if (thisValue == closingParenthesis) {
-        closePar++;
+    if (thisValue == openingBracket) {
+        openingBracketCount++;
+    } else if (thisValue == closingBracket) {
+        closingBracketCount++;
     };
 
-    if (inputPlace.value == 'NaN') {
-        inputPlace.value == '';
+    if (inputPlace.value == nanValue) {
+        inputPlace.value == emptyValue;
     };
 
     if (inputPlace.value.length > maxLength) {}
-    else if (!collectionOfNumbers.includes(thisValue) && lastValue == '.') {}
-    else if (thisValue == closingParenthesis && closePar > openPar) closePar--
-    else if (thisValue == openingParenthesis && !collectionOfOperators.includes(lastValue) && lastValue != openingParenthesis) openPar--
-    else if (thisValue == closingParenthesis && lastValue == openingParenthesis) closePar--
-    else if (thisValue == openingParenthesis && lastValue == closingParenthesis) openPar--
-    else if (thisValue == openingParenthesis && collectionOfNumbers.includes(lastValue)) openPar--
-    else if (thisValue == closingParenthesis && !collectionOfNumbers.includes(lastValue) && lastValue != closingParenthesis) closePar--
-    else if (thisValue == '.' && lastValue == closingParenthesis) {}
-    else if (lastValue == closingParenthesis && collectionOfNumbers.includes(thisValue)) openPar--
-    else if (lastValue == openingParenthesis && ['+', '*', '/', '%'].includes(thisValue)) {}
-    else if (inputPlace.value == '' && thisValue != '-' && thisValue != '.' && thisValue != openingParenthesis && !collectionOfNumbers.includes(thisValue)) {}
-    else if (collectionOfNumbers.includes(lastValue) && thisValue == openingParenthesis) {}
+    else if (!collectionOfNumbers.includes(thisValue) && lastValue == floatingDot) {}
+    else if (thisValue == closingBracket && closingBracketCount > openingBracketCount) closingBracketCount--
+    else if (thisValue == openingBracket && !collectionOfOperators.includes(lastValue) && lastValue != openingBracket) openingBracketCount--
+    else if (thisValue == closingBracket && lastValue == openingBracket) closingBracketCount--
+    else if (thisValue == openingBracket && lastValue == closingBracket) openingBracketCount--
+    else if (collectionOfNumbers.includes(lastValue) && thisValue == openingBracket) openingBracketCount--
+    else if (thisValue == closingBracket && !collectionOfNumbers.includes(lastValue) && lastValue != closingBracket) closingBracketCount--
+    else if (thisValue == floatingDot && lastValue == closingBracket) {}
+    else if (lastValue == closingBracket && collectionOfNumbers.includes(thisValue)) openingBracketCount--
+    else if (lastValue == openingBracket && defaultOperators.includes(thisValue)) {}
+    else if (inputPlace.value == emptyValue && thisValue != minusSign && thisValue != floatingDot && thisValue != openingBracket && !collectionOfNumbers.includes(thisValue)) {}
     else if (collectionOfOperators.includes(thisValue) && collectionOfOperators.includes(lastValue)) {
         inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1);
         inputPlace.value += thisValue;
     } else inputPlace.value += thisValue;
 
-    if (closePar == openPar) {
-        openPar = 0;
-        closePar = 0;
+    if (closingBracketCount === openingBracketCount) {
+        openingBracketCount = 0;
+        closingBracketCount = 0;
     };
 };
 
 function equal() {
-    if (inputPlace.value == '' && inputPlace.placeholder == 'Enter expression') {
-        return ''
+    if (inputPlace.value == emptyValue && inputPlace.placeholder == defaultExpression) {
+        return emptyValue
     };
 
-    if (inputPlace.value == '') {
+    if (inputPlace.value == emptyValue) {
         inputPlace.value = inputPlace.placeholder;
     };
 
@@ -112,50 +117,54 @@ function equal() {
     let arr = [];
     let newArr = [];
 
+    let fromStackOut = emptyValue;
+
+    let inputLength = input.length - 1;
+
     for (let i = 0; i < input.length; i++) {
-        if (input[i] == openingParenthesis && input[i+1] == '-') {
-            input = input.substr(0, i + 1) + '0' +  input.substr(i + 1);
+        if (input[i] == openingBracket && input[i+1] == minusSign) {
+            input = input.substr(0, i + 1) + zeroValue +  input.substr(i + 1);
         };
     };
 
-    if (openPar != 0 && openPar != closePar) { 
-        alert('Complete the expression!');
-        return ''
+    if (openingBracketCount != 0 && openingBracketCount != closingBracketCount) { 
+        expressionError.showPopover()
+        return emptyValue
     };
 
-    if (input[0] == '-') {
-        arr.push('0');
-        arr.push(' ');
+    if (input[0] == minusSign) {
+        arr.push(zeroValue);
+        arr.push(spaceValue);
     };
 
-    if (collectionOfOperators.includes(input[input.length - 1])) {
-        input = input.substr(0, input.length - 1);
+    if (collectionOfOperators.includes(input[inputLength])) {
+        input = input.substr(0, inputLength);
     };
 
-    if (inputPlace.value == '-') return '';
+    if (inputPlace.value == minusSign) return emptyValue;
 
     for (let i = 0; i < input.length; i++) {
         arr.push(input[i]);
-        if (!collectionOfNumbersWithDot.includes(input[i + 1]) && i < input.length - 1) {
-            arr.push(' ');
-        } else if (!collectionOfNumbersWithDot.includes(input[i]) && collectionOfNumbersWithDot.includes(input[i + 1]) && i < input.length - 1) {
-            arr.push(' ');
+        if (!collectionOfNumbersWithDot.includes(input[i + 1]) && i < inputLength) {
+            arr.push(spaceValue);
+        } else if (!collectionOfNumbersWithDot.includes(input[i]) && collectionOfNumbersWithDot.includes(input[i + 1]) && i < inputLength) {
+            arr.push(spaceValue);
         };
     };
 
-    newArr = arr.join('').split(' ');
+    newArr = arr.join(emptyValue).split(spaceValue);
 
     for (let i = 0; i < newArr.length; i++) {
         const char = newArr[i];
 
-        if (/[0-9]/.test(char)) {
+        if (regCollectionOfNumbers.test(char)) {
             revPolsNot.push(char);
-        } else if (char == openingParenthesis) {
+        } else if (char == openingBracket) {
             stack.push(char);
-        } else if (char == closingParenthesis) {
+        } else if (char == closingBracket) {
             let fromStack = stack.pop();
 
-            for (let i = stack.length; fromStack != (openingParenthesis) && i > 0; i--) {
+            for (let i = stack.length; fromStack != (openingBracket) && i > 0; i--) {
                 revPolsNot.push(fromStack);
                 fromStack = stack.pop();
             };
@@ -167,8 +176,6 @@ function equal() {
             stack.push(char);
         };
     };
-
-    let fromStackOut = '';
 
     for (let i = stack.length; i > 0; i--) {
         fromStackOut = stack.pop();
@@ -197,62 +204,71 @@ function equal() {
 
     const res = rpnToNormal(revPolsNot);
 
-    inputPlace.value = '';
+    inputPlace.value = emptyValue;
 
-    inputPlace.placeholder = +Number(res).toFixed(3);
+    inputPlace.placeholder = Number(Number(res).toFixed(3));
 };
 
 function clear() {
-    if (inputPlace.value[inputPlace.value.length - 1] == openingParenthesis) {
-        openPar--;
-    } else if (inputPlace.value[inputPlace.value.length - 1] == closingParenthesis) {
-        closePar--;
+    if (inputPlace.value[inputPlace.value.length - 1] == openingBracket) {
+        openingBracketCount--;
+    } else if (inputPlace.value[inputPlace.value.length - 1] == closingBracket) {
+        closingBracketCount--;
     }
 
     inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1);
-    inputPlace.placeholder = 'Enter expression';
+    inputPlace.placeholder = defaultExpression;
 };
 
 function clearAll() {
-    openPar = 0;
-    closePar = 0;
-    inputPlace.value = '';
-    inputPlace.placeholder = 'Enter expression';
+    openingBracketCount = 0;
+    closingBracketCount = 0;
+    inputPlace.value = emptyValue;
+    inputPlace.placeholder = defaultExpression;
 };
 
 function changeSign() {
-    if (inputPlace.value == '') {
+    if (inputPlace.value == emptyValue && inputPlace.placeholder == defaultExpression) return emptyValue;
+
+    if (inputPlace.value == emptyValue) {
         inputPlace.value = inputPlace.placeholder;
     };
 
-    if (inputPlace.value =='' && inputPlace.placeholder == 'Enter expression') return '';
-
-    if (inputPlace.value != '') {
+    if (inputPlace.value != emptyValue) {
         for (let i = inputPlace.value.length - 1; !collectionOfOperators.includes(inputPlace.value[i]) && i >= 0; i--) {
-            if (inputPlace.value[i-1] == '+') {
-                inputPlace.value = inputPlace.value.substr(0, i - 1) + '-' + inputPlace.value.substr(i);
-            } else if (inputPlace.value[i-1] == '-') {
-                inputPlace.value = inputPlace.value.substr(0, i - 1) + '+' + inputPlace.value.substr(i);
-            } else if (inputPlace.value[i-1] == '*') {
-                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + closingParenthesis;
-            } else if (inputPlace.value[i-1] == '/') {
-                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + closingParenthesis;
-            } else if (inputPlace.value[i-1] == '%') {
-                inputPlace.value = inputPlace.value.substr(0, i) + '(-' + inputPlace.value.substr(i) + closingParenthesis;
-            }  else if (inputPlace.value[i-1] == openingParenthesis) {
-                inputPlace.value = inputPlace.value.substr(0, i) + '-' + inputPlace.value.substr(i);
-            } else if (collectionOfNumbers.includes(inputPlace.value[0]) && i == 0) {
-                inputPlace.value = '-' + inputPlace.value.substr(0);
-            };
+            switch (inputPlace.value[i-1]) {
+                case plusSign: 
+                    inputPlace.value = inputPlace.value.substr(0, i - 1) + minusSign + inputPlace.value.substr(i);
+                    break;
+                case minusSign: 
+                    inputPlace.value = inputPlace.value.substr(0, i - 1) + plusSign + inputPlace.value.substr(i);
+                    break;
+                case multiSign: 
+                    inputPlace.value = inputPlace.value.substr(0, i) + openingBracket + minusSign + inputPlace.value.substr(i) + closingBracket;
+                    break;
+                case divisionSign: 
+                    inputPlace.value = inputPlace.value.substr(0, i) + openingBracket + minusSign + inputPlace.value.substr(i) + closingBracket;
+                    break;
+                case remainderSign: 
+                    inputPlace.value = inputPlace.value.substr(0, i) + openingBracket + minusSign + inputPlace.value.substr(i) + closingBracket;
+                    break;
+                case openingBracket: 
+                    inputPlace.value = inputPlace.value.substr(0, i) + minusSign + inputPlace.value.substr(i);
+                    break;
+            }
+
+            if (collectionOfNumbers.includes(inputPlace.value[0]) && i == 0) {
+                inputPlace.value = minusSign + inputPlace.value.substr(0);
+            }
         };
 
         for (let k = 0; k < inputPlace.value.length; k++) {
-            if (inputPlace.value[k] == openingParenthesis && inputPlace.value[k+1] == '+') {
+            if (inputPlace.value[k] == openingBracket && inputPlace.value[k+1] == plusSign) {
                 inputPlace.value = inputPlace.value.substr(0, k) + inputPlace.value.slice(k + 2, inputPlace.value.length - 1);
             };
         };
 
-        if (inputPlace.value[0] == '+') {
+        if (inputPlace.value[0] == plusSign) {
             inputPlace.value = inputPlace.value.substr(1);
         };
     };

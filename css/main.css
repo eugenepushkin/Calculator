@@ -251,11 +251,28 @@ button.zero {
     text-align: center;
     width: 200px;
     height: 200px;
+    padding-top: var(--indent-l);
     border-radius: var(--border-radius);
     background-color: var(--color-container-bg);
+    font-size: var(--fz-m);
+}
+
+#expression-error {
+    text-align: center;
+    vertical-align: middle;
+    padding-top: var(--indent-l);
+    width: 300px;
+    height: 100px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-container-bg);
+    font-size: var(--fz-m);
 }
 
 #burger-menu::backdrop {
+    background: var(--color-burger-bg);
+}
+
+#expression-error::backdrop {
     background: var(--color-burger-bg);
 }
 
@@ -385,5 +402,9 @@ button.zero {
 
     .navigation ul {
         gap: 7px;
+    }
+
+    .container.container-settings {
+        width: 260px;
     }
 }
