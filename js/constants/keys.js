@@ -1,0 +1,21 @@
+export const keyCodes = {
+    zeroKeyCode: 48,
+    oneKeyCode: 49,
+    twoKeyCode: 50,
+    threeKeyCode: 51,
+    fourKeyCode: 52,
+    fiveKeyCode: 53,
+    sixKeyCode: 54,
+    sevenKeyCode: 55,
+    eightKeyCode: 56,
+    nineKeyCode: 57,
+    dotKeyCode: 46,
+    enterKeyCode: 13,
+    minusKeyCode: 45,
+    plusKeyCode: 43,
+    multiplicationKeyCode: 42,
+    divisionKeyCode: 47,
+    remainderKeyCode: 37,
+    openingParenthesisKeyCode: 40,
+    closingParenthesisKeyCode: 41
+}

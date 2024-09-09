@@ -22,7 +22,7 @@ html {
     --color-gray: #505050;
     --color-item-bg: #f1b32d;
     --color-burger-bg: #61616180;
-    --font-family: "Kanit", system-ui;
+    --font-family-s: "Kanit", system-ui;
     --fz-s: 16px;
     --fz-m: 18px;
     --fz-l: 20px;
@@ -38,7 +38,7 @@ body {
     flex-direction: row;
     gap: var(--indent-s);
     background-color: var(--color-bg);
-    font-family: var(--font-family);
+    font-family: var(--font-family-s);
 }
 
 .index-main {
@@ -49,8 +49,9 @@ body {
 }
 
 button {
-    border: none; 
-    font-family: var(--font-family);
+    border: none;
+    color: var(--color-black); 
+    font-family: var(--font-family-s);
     transition: .3s;
 }
 
@@ -147,12 +148,18 @@ form {
 input {
     width: 100%;
     height: 40px;
+    padding: 0 var(--indent-m);
     border: none;
     border-radius: var(--border-radius);
+    font-family: var(--font-family-s);
     font-size: var(--fz-m);
     line-height: var(--fz-m);
     outline: none;
     text-align: right;
+}
+
+input::placeholder {
+    color: var(--color-black);
 }
 
 select:focus-visible {
@@ -195,6 +202,7 @@ button.zero {
     border: 1px solid var(--color-black);
     border-radius: 5px;
     background-color: var(--color-bg);
+    color: var(--color-black);
     font-size: var(--fz-s);
     line-height: var(--fz-s);
     cursor: pointer;
@@ -224,9 +232,11 @@ button.zero {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0;
     gap: 7px;
     border-radius: 50%;
-    height: 40px;
+    width: var(--indent-xl);
+    height: var(--indent-xl);
     background-color: var(--color-item-bg);
 }
 
@@ -241,11 +251,28 @@ button.zero {
     text-align: center;
     width: 200px;
     height: 200px;
+    padding-top: var(--indent-l);
     border-radius: var(--border-radius);
     background-color: var(--color-container-bg);
+    font-size: var(--fz-m);
+}
+
+#expression-error {
+    text-align: center;
+    vertical-align: middle;
+    padding-top: var(--indent-l);
+    width: 300px;
+    height: 100px;
+    border-radius: var(--border-radius);
+    background-color: var(--color-container-bg);
+    font-size: var(--fz-m);
 }
 
 #burger-menu::backdrop {
+    background: var(--color-burger-bg);
+}
+
+#expression-error::backdrop {
     background: var(--color-burger-bg);
 }
 
@@ -346,7 +373,11 @@ button.zero {
     .container {
         width: 300px;
         height: 410px;
-    }   
+    }
+
+    .container.container-settings {
+        width: 300px;
+    }
     
     h1 {
         font-size: var(--fz-m);
@@ -371,5 +402,9 @@ button.zero {
 
     .navigation ul {
         gap: 7px;
+    }
+
+    .container.container-settings {
+        width: 260px;
     }
 }
