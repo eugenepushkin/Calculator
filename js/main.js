@@ -38,14 +38,24 @@ let closingBracketCount = 0;
 
 function updateInput() {
     let maxLength = 30;
-    let lastValue = inputPlace.value[inputPlace.value.length - 1];
-    let thisValue = this.textContent;
+    const lastValue = inputPlace.value[inputPlace.value.length - 1];
+    const thisValue = this.textContent;
+    const isThisNumber = collectionOfNumbers.includes(thisValue);
+    const isThisClosingBracket = (thisValue === closingBracket);
+    const isThisOpeningBracket = (thisValue === openingBracket);
+    const isThisOperator = (collectionOfOperators.includes(thisValue));
+    const isLastNumber = collectionOfNumbers.includes(lastValue);
+    const isLastOpeningBracket = (lastValue === openingBracket);
+    const isLastClosingBracket = (lastValue === closingBracket);
+    const isLastOperator = collectionOfOperators.includes(lastValue);
 
-    if (inputPlace.value == emptyValue && collectionOfOperators.includes(thisValue) && inputPlace.placeholder != defaultExpression) {
+    if (inputPlace.value === emptyValue && isThisOperator && inputPlace.placeholder != defaultExpression) {
         inputPlace.value = inputPlace.placeholder;
     };
 
-    if (thisValue == floatingDot && inputPlace.value != emptyValue) {
+    const isInputEmpty = (inputPlace.value === emptyValue);
+    
+    if (thisValue === floatingDot && inputPlace.value != emptyValue) {
         let count = 0;
         let arrOfStr = [];
 
@@ -54,7 +64,7 @@ function updateInput() {
         };
 
         for (let k = 0; k < arrOfStr.length; k++) {
-            if (arrOfStr[k] == floatingDot) {
+            if (arrOfStr[k] === floatingDot) {
                 count++;
             }
         };
@@ -64,33 +74,33 @@ function updateInput() {
         };
     };
 
-    if (inputPlace.value[0] == plusSign) {
+    if (inputPlace.value[0] === plusSign) {
         inputPlace.value = inputPlace.value.substr(1);
     };
 
-    if (thisValue == openingBracket) {
+    if (isThisOpeningBracket) {
         openingBracketCount++;
-    } else if (thisValue == closingBracket) {
+    } else if (isThisClosingBracket) {
         closingBracketCount++;
     };
 
-    if (inputPlace.value == nanValue) {
-        inputPlace.value == emptyValue;
+    if (inputPlace.value === nanValue) {
+        inputPlace.value = emptyValue;
     };
-
+    
     if (inputPlace.value.length > maxLength) {}
-    else if (!collectionOfNumbers.includes(thisValue) && lastValue == floatingDot) {}
-    else if (thisValue == closingBracket && closingBracketCount > openingBracketCount) closingBracketCount--
-    else if (thisValue == openingBracket && !collectionOfOperators.includes(lastValue) && lastValue != openingBracket) openingBracketCount--
-    else if (thisValue == closingBracket && lastValue == openingBracket) closingBracketCount--
-    else if (thisValue == openingBracket && lastValue == closingBracket) openingBracketCount--
-    else if (collectionOfNumbers.includes(lastValue) && thisValue == openingBracket) openingBracketCount--
-    else if (thisValue == closingBracket && !collectionOfNumbers.includes(lastValue) && lastValue != closingBracket) closingBracketCount--
-    else if (thisValue == floatingDot && lastValue == closingBracket) {}
-    else if (lastValue == closingBracket && collectionOfNumbers.includes(thisValue)) openingBracketCount--
-    else if (lastValue == openingBracket && defaultOperators.includes(thisValue)) {}
-    else if (inputPlace.value == emptyValue && thisValue != minusSign && thisValue != floatingDot && thisValue != openingBracket && !collectionOfNumbers.includes(thisValue)) {}
-    else if (collectionOfOperators.includes(thisValue) && collectionOfOperators.includes(lastValue)) {
+    else if (!isThisNumber && lastValue === floatingDot) {}
+    else if (isThisClosingBracket && closingBracketCount > openingBracketCount) closingBracketCount--
+    else if (isThisOpeningBracket && !isLastOperator && !isLastOpeningBracket) openingBracketCount--
+    else if (isThisClosingBracket && isLastOpeningBracket) closingBracketCount--
+    else if (isThisOpeningBracket && isLastClosingBracket) openingBracketCount--
+    else if (isLastNumber && isThisOpeningBracket) openingBracketCount--
+    else if (isThisClosingBracket && !isLastNumber && lastValue != closingBracket) closingBracketCount--
+    else if (thisValue === floatingDot && isLastClosingBracket) {}
+    else if (isLastClosingBracket && isThisNumber) openingBracketCount--
+    else if (isLastOpeningBracket && defaultOperators.includes(thisValue)) {}
+    else if (isInputEmpty && ![minusSign, floatingDot, openingBracket].includes(thisValue) && !isThisNumber) {}
+    else if (isThisOperator && isLastOperator) {
         inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1);
         inputPlace.value += thisValue;
     } else inputPlace.value += thisValue;
@@ -102,11 +112,13 @@ function updateInput() {
 };
 
 function equal() {
-    if (inputPlace.value == emptyValue && inputPlace.placeholder == defaultExpression) {
+    const isInputEmpty = (inputPlace.value === emptyValue);
+
+    if (isInputEmpty && inputPlace.placeholder === defaultExpression) {
         return emptyValue
     };
 
-    if (inputPlace.value == emptyValue) {
+    if (isInputEmpty) {
         inputPlace.value = inputPlace.placeholder;
     };
 
@@ -122,7 +134,7 @@ function equal() {
     let inputLength = input.length - 1;
 
     for (let i = 0; i < input.length; i++) {
-        if (input[i] == openingBracket && input[i+1] == minusSign) {
+        if (input[i] === openingBracket && input[i+1] === minusSign) {
             input = input.substr(0, i + 1) + zeroValue +  input.substr(i + 1);
         };
     };
@@ -132,7 +144,7 @@ function equal() {
         return emptyValue
     };
 
-    if (input[0] == minusSign) {
+    if (input[0] === minusSign) {
         arr.push(zeroValue);
         arr.push(spaceValue);
     };
@@ -141,13 +153,16 @@ function equal() {
         input = input.substr(0, inputLength);
     };
 
-    if (inputPlace.value == minusSign) return emptyValue;
+    if (input === minusSign) return emptyValue;
 
     for (let i = 0; i < input.length; i++) {
+        const isThisNumber = collectionOfNumbersWithDot.includes(input[i]);
+        const isNextNumber = collectionOfNumbersWithDot.includes(input[i + 1]);
+        
         arr.push(input[i]);
-        if (!collectionOfNumbersWithDot.includes(input[i + 1]) && i < inputLength) {
+        if (!isNextNumber && i < inputLength) {
             arr.push(spaceValue);
-        } else if (!collectionOfNumbersWithDot.includes(input[i]) && collectionOfNumbersWithDot.includes(input[i + 1]) && i < inputLength) {
+        } else if (!isThisNumber && isNextNumber && i < inputLength) {
             arr.push(spaceValue);
         };
     };
@@ -159,9 +174,9 @@ function equal() {
 
         if (regCollectionOfNumbers.test(char)) {
             revPolsNot.push(char);
-        } else if (char == openingBracket) {
+        } else if (char === openingBracket) {
             stack.push(char);
-        } else if (char == closingBracket) {
+        } else if (char === closingBracket) {
             let fromStack = stack.pop();
 
             for (let i = stack.length; fromStack != (openingBracket) && i > 0; i--) {
@@ -210,9 +225,11 @@ function equal() {
 };
 
 function clear() {
-    if (inputPlace.value[inputPlace.value.length - 1] == openingBracket) {
+    const inputLastValue = inputPlace.value[inputPlace.value.length - 1];
+
+    if (inputLastValue === openingBracket) {
         openingBracketCount--;
-    } else if (inputPlace.value[inputPlace.value.length - 1] == closingBracket) {
+    } else if (inputLastValue === closingBracket) {
         closingBracketCount--;
     }
 
@@ -228,9 +245,11 @@ function clearAll() {
 };
 
 function changeSign() {
-    if (inputPlace.value == emptyValue && inputPlace.placeholder == defaultExpression) return emptyValue;
+    const isInputEmpty = (inputPlace.value === emptyValue);
 
-    if (inputPlace.value == emptyValue) {
+    if (isInputEmpty && inputPlace.placeholder === defaultExpression) return emptyValue;
+
+    if (isInputEmpty) {
         inputPlace.value = inputPlace.placeholder;
     };
 
@@ -257,18 +276,18 @@ function changeSign() {
                     break;
             }
 
-            if (collectionOfNumbers.includes(inputPlace.value[0]) && i == 0) {
+            if (collectionOfNumbers.includes(inputPlace.value[0]) && i === 0) {
                 inputPlace.value = minusSign + inputPlace.value.substr(0);
             }
         };
 
         for (let k = 0; k < inputPlace.value.length; k++) {
-            if (inputPlace.value[k] == openingBracket && inputPlace.value[k+1] == plusSign) {
+            if (inputPlace.value[k] === openingBracket && inputPlace.value[k+1] === plusSign) {
                 inputPlace.value = inputPlace.value.substr(0, k) + inputPlace.value.slice(k + 2, inputPlace.value.length - 1);
             };
         };
 
-        if (inputPlace.value[0] == plusSign) {
+        if (inputPlace.value[0] === plusSign) {
             inputPlace.value = inputPlace.value.substr(1);
         };
     };
