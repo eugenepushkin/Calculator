@@ -4,7 +4,7 @@ import { floatingDot, minusSign, plusSign, multiSign, divisionSign, remainderSig
 import { regCollectionOfNumbers } from './constants/regular.js';
 import { emptyValue, spaceValue, zeroValue, nanValue } from './constants/empty.js';
 import { defaultExpression } from './constants/expression.js';
-import { historyUpdate } from './history.js';
+import { historyUpdate, localObjectMethods } from './history.js';
 import physicalKeyboard from './keyboard.js';
 
 export const equalBtn = document.querySelector('.equal');
@@ -128,12 +128,12 @@ function equal() {
     else if (inputPlace.value[0] === minusSign) {
         inputSigns = inputPlace.value.slice(1);
         countSigns()
-        if (signsCount === 0) return emptyValue
     } else {
         inputSigns = inputPlace.value;
         countSigns()
-        if (signsCount === 0) return emptyValue
     } 
+
+    if (signsCount === 0) return emptyValue
 
     function countSigns() {
         signsCount = 0;
@@ -240,11 +240,11 @@ function equal() {
     const res = rpnToNormal(revPolsNot);
     let lastLocalStorage = 0;
 
-    if (localStorage.getItem('operations') == null) {
-        window.localStorage.setItem(`operations`, `["${inputPlace.value}"]`);
+    if (localObjectMethods.get() == null) {
+        localObjectMethods.set(inputPlace.value);
 
         historyUpdate();
-    } else if (localStorage.getItem('operations') !== null) {
+    } else if (localObjectMethods.get() !== null) {
         updateLocalStorage()
     
         historyUpdate();
