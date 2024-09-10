@@ -38,7 +38,7 @@ document.onkeypress = physicalKeyboard;
 let openingBracketCount = 0;
 let closingBracketCount = 0;
 
-let localStorageCount = defaultValueLocalStorage;
+let localStorageCount = 0;
 
 function updateInput() {
     let maxLength = 30;
@@ -52,8 +52,6 @@ function updateInput() {
     const isLastOpeningBracket = (lastValue === openingBracket);
     const isLastClosingBracket = (lastValue === closingBracket);
     const isLastOperator = collectionOfOperators.includes(lastValue);
-
-    localStorageCount = localStorage.length - 2;
 
     if (inputPlace.value === emptyValue && isThisOperator && inputPlace.placeholder != defaultExpression) {
         inputPlace.value = inputPlace.placeholder;
@@ -153,7 +151,7 @@ function equal() {
 
     let inputLength = input.length - 1;
     
-    localStorageCount = localStorage.length - 2;
+    localStorageCount = localStorage.length;
 
     for (let i = 0; i < input.length; i++) {
         if (input[i] === openingBracket && input[i+1] === minusSign) {
