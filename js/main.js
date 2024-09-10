@@ -348,4 +348,4 @@ function addHandler() {
 };
 
 window.onload = addHandler();
-window.onload = historyUpdate();
+window.onload = setTimeout(historyUpdate(), 3000)
