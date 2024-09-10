@@ -5,7 +5,6 @@ import { regCollectionOfNumbers } from './constants/regular.js';
 import { emptyValue, spaceValue, zeroValue, nanValue } from './constants/empty.js';
 import { defaultExpression } from './constants/expression.js';
 import { historyUpdate } from './history.js';
-import { defaultValueLocalStorage } from './constants/local.js';
 import physicalKeyboard from './keyboard.js';
 
 export const equalBtn = document.querySelector('.equal');
@@ -37,8 +36,6 @@ document.onkeypress = physicalKeyboard;
 
 let openingBracketCount = 0;
 let closingBracketCount = 0;
-
-let localStorageCount = 0;
 
 function updateInput() {
     let maxLength = 30;
@@ -121,6 +118,11 @@ function equal() {
     let inputSigns = emptyValue;
     let signsCount = 0;
 
+    function updateLocalStorage() {
+        lastLocalStorage = localStorage.operations.length - 1;
+        localStorage.operations = localStorage.operations.slice(0, lastLocalStorage) + `,"${inputPlace.value}"` + localStorage.operations.slice(lastLocalStorage);
+    }
+
     if (isInputEmpty && inputPlace.placeholder === defaultExpression) return emptyValue
     else if (isInputEmpty || inputPlace.value === minusSign) return emptyValue
     else if (inputPlace.value[0] === minusSign) {
@@ -150,8 +152,6 @@ function equal() {
     let fromStackOut = emptyValue;
 
     let inputLength = input.length - 1;
-    
-    localStorageCount = localStorage.length;
 
     for (let i = 0; i < input.length; i++) {
         if (input[i] === openingBracket && input[i+1] === minusSign) {
@@ -238,13 +238,15 @@ function equal() {
     };
 
     const res = rpnToNormal(revPolsNot);
+    let lastLocalStorage = 0;
 
-    if (localStorage[localStorage.length - 1] != inputPlace.value) {
-        console.log(localStorageCount)
-        window.localStorage.setItem(`${localStorageCount}`, `${inputPlace.value}`);
-        
-        localStorageCount++;
+    if (localStorage.getItem('operations') == null) {
+        window.localStorage.setItem(`operations`, `["${inputPlace.value}"]`);
 
+        historyUpdate();
+    } else if (localStorage.getItem('operations') !== null) {
+        updateLocalStorage()
+    
         historyUpdate();
     }
 
