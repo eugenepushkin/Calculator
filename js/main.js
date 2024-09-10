@@ -150,7 +150,7 @@ function equal() {
 
     let inputLength = input.length - 1;
     
-    localStorageCount = localStorage.length;
+    localStorageCount = localStorage.length - 2;
 
     for (let i = 0; i < input.length; i++) {
         if (input[i] === openingBracket && input[i+1] === minusSign) {
