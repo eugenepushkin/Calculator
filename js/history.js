@@ -1,3 +1,5 @@
+import { regCollectionOfNumbers } from './constants/regular.js';
+
 const historyOperations = document.querySelector('.history-operations');
 
 export function historyUpdate() {
@@ -5,8 +7,10 @@ export function historyUpdate() {
         historyOperations.innerHTML = `Operation history is empty`;
     } else {
         historyOperations.innerHTML = ``;
-        for (let i=0; i < localStorage.length; i++) {
-            historyOperations.insertAdjacentHTML('beforeend', `<p>${localStorage[i]}</p>`)
+        for (let i = 0; i < localStorage.length; i++) {
+            if (regCollectionOfNumbers.test(localStorage[i][0]) || localStorage[i][0] === '-') {
+                historyOperations.insertAdjacentHTML('beforeend', `<p>${localStorage[i]}</p>`)
+            }
         };
     };
 };
