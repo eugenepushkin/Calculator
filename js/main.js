@@ -4,6 +4,7 @@ import { floatingDot, minusSign, plusSign, multiSign, divisionSign, remainderSig
 import { regCollectionOfNumbers } from './constants/regular.js';
 import { emptyValue, spaceValue, zeroValue, nanValue } from './constants/empty.js';
 import { defaultExpression } from './constants/expression.js';
+import { historyUpdate } from './history.js';
 import physicalKeyboard from './keyboard.js';
 
 export const equalBtn = document.querySelector('.equal');
@@ -35,6 +36,8 @@ document.onkeypress = physicalKeyboard;
 
 let openingBracketCount = 0;
 let closingBracketCount = 0;
+
+let localStorageCount = 0;
 
 function updateInput() {
     let maxLength = 30;
@@ -114,13 +117,27 @@ function updateInput() {
 function equal() {
     const isInputEmpty = (inputPlace.value === emptyValue);
 
-    if (isInputEmpty && inputPlace.placeholder === defaultExpression) {
-        return emptyValue
-    };
+    let inputSigns = emptyValue;
+    let signsCount = 0;
 
-    if (isInputEmpty) {
-        inputPlace.value = inputPlace.placeholder;
-    };
+    if (isInputEmpty && inputPlace.placeholder === defaultExpression) return emptyValue
+    else if (isInputEmpty || inputPlace.value === minusSign) return emptyValue
+    else if (inputPlace.value[0] === minusSign) {
+        inputSigns = inputPlace.value.slice(1);
+        countSigns()
+        if (signsCount === 0) return emptyValue
+    } else {
+        inputSigns = inputPlace.value;
+        countSigns()
+        if (signsCount === 0) return emptyValue
+    } 
+
+    function countSigns() {
+        signsCount = 0;
+        for (let item of inputSigns) {
+            if (collectionOfOperators.includes(item)) signsCount++
+        }
+    }
 
     let input = inputPlace.value;
     let revPolsNot = [];
@@ -132,6 +149,8 @@ function equal() {
     let fromStackOut = emptyValue;
 
     let inputLength = input.length - 1;
+    
+    localStorageCount = localStorage.length;
 
     for (let i = 0; i < input.length; i++) {
         if (input[i] === openingBracket && input[i+1] === minusSign) {
@@ -218,6 +237,14 @@ function equal() {
     };
 
     const res = rpnToNormal(revPolsNot);
+
+    if (localStorage[localStorage.length - 1] != inputPlace.value) {
+        window.localStorage.setItem(`${localStorageCount}`, `${inputPlace.value}`);
+        
+        localStorageCount++;
+
+        historyUpdate();
+    }
 
     inputPlace.value = emptyValue;
 
@@ -319,3 +346,4 @@ function addHandler() {
 };
 
 window.onload = addHandler();
+window.onload = historyUpdate();
