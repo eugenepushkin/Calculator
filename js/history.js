@@ -8,7 +8,10 @@ export function historyUpdate() {
     } else {
         historyOperations.innerHTML = ``;
         for (let i = 0; i < localStorage.length; i++) {
-            if (regCollectionOfNumbers.test(localStorage[i][0]) || localStorage[i][0] === '-') {
+            console.log(localStorage[i][0] === '-')
+            if (regCollectionOfNumbers.test(localStorage[i][0])) {
+                historyOperations.insertAdjacentHTML('beforeend', `<p>${localStorage[i]}</p>`)
+            } else if (localStorage[i][0] === '-') {
                 historyOperations.insertAdjacentHTML('beforeend', `<p>${localStorage[i]}</p>`)
             }
         };
