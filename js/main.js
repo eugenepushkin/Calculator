@@ -53,6 +53,8 @@ function updateInput() {
     const isLastClosingBracket = (lastValue === closingBracket);
     const isLastOperator = collectionOfOperators.includes(lastValue);
 
+    localStorageCount = localStorage.length - 2;
+
     if (inputPlace.value === emptyValue && isThisOperator && inputPlace.placeholder != defaultExpression) {
         inputPlace.value = inputPlace.placeholder;
     };
