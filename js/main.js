@@ -37,7 +37,7 @@ document.onkeypress = physicalKeyboard;
 let openingBracketCount = 0;
 let closingBracketCount = 0;
 
-let localStorageCount = localStorage.length;
+let localStorageCount = 0;
 
 function updateInput() {
     let maxLength = 30;
