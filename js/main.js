@@ -5,6 +5,7 @@ import { regCollectionOfNumbers } from './constants/regular.js';
 import { emptyValue, spaceValue, zeroValue, nanValue } from './constants/empty.js';
 import { defaultExpression } from './constants/expression.js';
 import { historyUpdate } from './history.js';
+import { defaultValueLocalStorage } from './constants/local.js';
 import physicalKeyboard from './keyboard.js';
 
 export const equalBtn = document.querySelector('.equal');
@@ -37,7 +38,7 @@ document.onkeypress = physicalKeyboard;
 let openingBracketCount = 0;
 let closingBracketCount = 0;
 
-let localStorageCount = 2;
+let localStorageCount = defaultValueLocalStorage;
 
 function updateInput() {
     let maxLength = 30;

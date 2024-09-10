@@ -1,17 +1,20 @@
 import { regCollectionOfNumbers } from './constants/regular.js';
+import { defaultValueLocalStorage } from './constants/local.js';
+import { emptyValue } from './constants/empty.js';
+import { minusSign } from './constants/signs.js';
 
 const historyOperations = document.querySelector('.history-operations');
-const defaultValueLocalStorage = 2;
 
 export function historyUpdate() {
     if (localStorage.length === defaultValueLocalStorage) {
-        historyOperations.innerHTML = `Operation history is empty`;
+        historyOperations.innerHTML = 'Operation history is empty';
     } else {
-        historyOperations.innerHTML = ``;
+        historyOperations.innerHTML = emptyValue;
         for (let i = 0; i < localStorage.length - defaultValueLocalStorage; i++) {
-            if (regCollectionOfNumbers.test(localStorage[i][0])) {
+            let firstElem = localStorage[i][0]
+            if (regCollectionOfNumbers.test(firstElem)) {
                 historyOperations.insertAdjacentHTML('beforeend', `<p>${localStorage[i]}</p>`)
-            } else if (localStorage[i][0] === '-') {
+            } else if (firstElem === minusSign) {
                 historyOperations.insertAdjacentHTML('beforeend', `<p>${localStorage[i]}</p>`)
             }
         };
