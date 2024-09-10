@@ -37,7 +37,7 @@ document.onkeypress = physicalKeyboard;
 let openingBracketCount = 0;
 let closingBracketCount = 0;
 
-let localStorageCount = 0;
+let localStorageCount = defaultValueLocalStorage;
 
 function updateInput() {
     let maxLength = 30;
@@ -239,6 +239,7 @@ function equal() {
     const res = rpnToNormal(revPolsNot);
 
     if (localStorage[localStorage.length - 1] != inputPlace.value) {
+        console.log(localStorageCount)
         window.localStorage.setItem(`${localStorageCount}`, `${inputPlace.value}`);
         
         localStorageCount++;
