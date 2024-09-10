@@ -8,9 +8,7 @@ const historyOperations = document.querySelector('.history-operations');
 export function historyUpdate() {
     if (localStorage.length === defaultValueLocalStorage) {
         historyOperations.innerHTML = 'Operation history is empty';
-    } else if (historyOperations.innerHTML === emptyValue) {
-        historyOperations.innerHTML = 'Operation history is empty';
-    } else {
+    } else if (localStorage.length > defaultValueLocalStorage) {
         historyOperations.innerHTML = emptyValue;
         for (let i = 0; i < localStorage.length - defaultValueLocalStorage; i++) {
             let firstElem = localStorage[i][0]
@@ -20,5 +18,7 @@ export function historyUpdate() {
                 historyOperations.insertAdjacentHTML('beforeend', `<p>${localStorage[i]}</p>`)
             }
         };
+    } else {
+        historyOperations.innerHTML = 'Operation history is empty';
     };
 };
