@@ -4,6 +4,7 @@ import { floatingDot, minusSign, plusSign, multiSign, divisionSign, remainderSig
 import { regCollectionOfNumbers } from './constants/regular.js';
 import { emptyValue, spaceValue, zeroValue, nanValue } from './constants/empty.js';
 import { defaultExpression } from './constants/expression.js';
+import { historyUpdate, localStorageMethods } from './history.js';
 import physicalKeyboard from './keyboard.js';
 
 export const equalBtn = document.querySelector('.equal');
@@ -91,7 +92,7 @@ function updateInput() {
     if (inputPlace.value.length > maxLength) {}
     else if (!isThisNumber && lastValue === floatingDot) {}
     else if (isThisClosingBracket && closingBracketCount > openingBracketCount) closingBracketCount--
-    else if (isThisOpeningBracket && !isLastOperator && !isLastOpeningBracket) openingBracketCount--
+    else if (isThisOpeningBracket && (!isLastOperator && inputPlace.value != emptyValue) && !isLastOpeningBracket) openingBracketCount--
     else if (isThisClosingBracket && isLastOpeningBracket) closingBracketCount--
     else if (isThisOpeningBracket && isLastClosingBracket) openingBracketCount--
     else if (isLastNumber && isThisOpeningBracket) openingBracketCount--
@@ -100,6 +101,7 @@ function updateInput() {
     else if (isLastClosingBracket && isThisNumber) openingBracketCount--
     else if (isLastOpeningBracket && defaultOperators.includes(thisValue)) {}
     else if (isInputEmpty && ![minusSign, floatingDot, openingBracket].includes(thisValue) && !isThisNumber) {}
+    else if (inputPlace.value === minusSign && defaultOperators.includes(thisValue)) {}
     else if (isThisOperator && isLastOperator) {
         inputPlace.value = inputPlace.value.substr(0, inputPlace.value.length - 1);
         inputPlace.value += thisValue;
@@ -114,13 +116,32 @@ function updateInput() {
 function equal() {
     const isInputEmpty = (inputPlace.value === emptyValue);
 
-    if (isInputEmpty && inputPlace.placeholder === defaultExpression) {
-        return emptyValue
-    };
+    let inputSigns = emptyValue;
+    let signsCount = 0;
+    let lastElemLocalStorage = 0;
 
-    if (isInputEmpty) {
-        inputPlace.value = inputPlace.placeholder;
-    };
+    function updateLocalStorage() {
+        lastElemLocalStorage = localStorage.operations.length - 1;
+        localStorage.operations = localStorage.operations.slice(0, lastElemLocalStorage) + `,"${inputPlace.value}"` + localStorage.operations.slice(lastElemLocalStorage);
+    }
+
+    if (isInputEmpty && inputPlace.placeholder === defaultExpression) return emptyValue
+    else if (isInputEmpty || inputPlace.value === minusSign) return emptyValue
+    
+    countSigns()
+
+    if (signsCount === 0) return emptyValue
+
+    function countSigns() {
+        signsCount = 0;
+
+        if (inputPlace.value[0] === minusSign) inputSigns = inputPlace.value.slice(1);
+        else inputSigns = inputPlace.value;
+
+        for (let item of inputSigns) {
+            if (collectionOfOperators.includes(item)) signsCount++
+        }
+    }
 
     let input = inputPlace.value;
     let revPolsNot = [];
@@ -160,7 +181,7 @@ function equal() {
         const isNextNumber = collectionOfNumbersWithDot.includes(input[i + 1]);
         
         arr.push(input[i]);
-        if (!isNextNumber && i < inputLength) {
+        if (!isNextNumber && i <= inputLength) {
             arr.push(spaceValue);
         } else if (!isThisNumber && isNextNumber && i < inputLength) {
             arr.push(spaceValue);
@@ -171,14 +192,12 @@ function equal() {
 
     for (let i = 0; i < newArr.length; i++) {
         const char = newArr[i];
-
         if (regCollectionOfNumbers.test(char)) {
             revPolsNot.push(char);
         } else if (char === openingBracket) {
             stack.push(char);
         } else if (char === closingBracket) {
             let fromStack = stack.pop();
-
             for (let i = stack.length; fromStack != (openingBracket) && i > 0; i--) {
                 revPolsNot.push(fromStack);
                 fromStack = stack.pop();
@@ -187,7 +206,6 @@ function equal() {
             for (let i = stack.length; operators[stack.slice(-1)] >= operators[char] && i > 0; i--) {
                 revPolsNot.push(stack.pop());
             };
-
             stack.push(char);
         };
     };
@@ -199,13 +217,12 @@ function equal() {
 
     function rpnToNormal(expression) {
         const stack = [];
-
         for (let token of expression) {
             if (isNumber(token)) {
                 stack.push(parseFloat(token));
             } else {
                 const operand2 = stack.pop();
-                const operand1 = stack.pop();
+                let operand1 = stack.pop();
                 const operator = operatorsWithExpressions[token];
                 stack.push(operator(operand1, operand2));
             };
@@ -218,6 +235,16 @@ function equal() {
     };
 
     const res = rpnToNormal(revPolsNot);
+
+    if (localStorageMethods.get() == null) {
+        localStorageMethods.set(inputPlace.value);
+
+        historyUpdate();
+    } else if (localStorageMethods.get() !== null) {
+        updateLocalStorage()
+    
+        historyUpdate();
+    }
 
     inputPlace.value = emptyValue;
 
@@ -319,3 +346,4 @@ function addHandler() {
 };
 
 window.onload = addHandler();
+window.onload = setTimeout(historyUpdate(), 0)
