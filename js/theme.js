@@ -12,9 +12,7 @@ function themeChanger() {
     localStorageMethods.delete('theme');
     localStorageMethods.setTheme('theme', `${selectForm.value}`);
     isDarkTheme();
-    if (localStorage.theme === 'dark-theme') {
-        selectDarkTheme.selected = true;
-    };
+    selectForm.click();
 };
 
 function isDarkTheme() {
