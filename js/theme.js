@@ -1,18 +1,10 @@
 import { localStorageMethods } from './history.js'
 
 const selectForm = document.querySelector('.theme-select');
-const body = document.querySelector('body');
 const selectDarkTheme = selectForm[1];
 
 if (localStorage.theme === 'dark-theme') {
     selectDarkTheme.selected = true;
-};
-
-function themeChanger() {
-    localStorageMethods.delete('theme');
-    localStorageMethods.setTheme('theme', `${selectForm.value}`);
-    isDarkTheme();
-    selectForm.click();
 };
 
 function isDarkTheme() {
@@ -20,4 +12,18 @@ function isDarkTheme() {
     else body.classList.remove('dark');
 }
 
-selectForm.addEventListener("click", themeChanger);
+const body = document.querySelector('body');
+
+function themeChanger() {
+    let select = document.querySelector('.theme-select');
+
+    select.addEventListener("change", themeSelect);
+}
+
+themeChanger()
+
+function themeSelect() {
+    localStorageMethods.delete('theme');
+    localStorageMethods.setTheme('theme', `${this.value}`);
+    isDarkTheme();
+}
