@@ -30,7 +30,8 @@ const inputPlace = document.querySelector("input");
 const plusMinusBtn = document.querySelector('.plus-minus');
 const clearBtn = document.querySelector('.clear');
 const clearAllBtn = document.querySelector('.clear-all');
-const expressionError = document.getElementById('expression-error')
+const expressionError = document.getElementById('expression-error');
+const body = document.querySelector('body');
 
 document.onkeypress = physicalKeyboard;
 

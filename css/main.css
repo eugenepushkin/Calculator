@@ -22,6 +22,7 @@ html {
     --color-gray: #505050;
     --color-item-bg: #f1b32d;
     --color-burger-bg: #61616180;
+    --color-item-bg-dark: var(--color-item-bg-dark);
     --font-family-s: "Kanit", system-ui;
     --fz-s: 16px;
     --fz-m: 18px;
@@ -39,6 +40,10 @@ body {
     gap: var(--indent-s);
     background-color: var(--color-bg);
     font-family: var(--font-family-s);
+}
+
+body.dark {
+    background-color: var(--color-gray);
 }
 
 .index-main {
@@ -65,6 +70,10 @@ button {
     border: 3px solid var(--color-black);
 }
 
+body.dark .container {
+    background-color: var(--color-white);
+}
+
 .container-history {
     width: 300px;
     max-height: 560px;
@@ -75,6 +84,10 @@ button {
     overflow-y: scroll;
 }
 
+body.dark .container-history {
+    background-color: var(--color-white);
+}
+
 .container-history::-webkit-scrollbar {
     width: 5px;
     background-color: var(--color-black);
@@ -83,6 +96,10 @@ button {
 .container-history::-webkit-scrollbar-thumb {
     border-radius: var(--border-radius);
     background-color: var(--color-item-bg);
+}
+
+body.dark .container-history::-webkit-scrollbar-thumb {
+    background-color: var(--color-white);
 }
 
 .container-settings {
@@ -141,6 +158,11 @@ h2 {
     cursor: pointer;
 }
 
+body.dark .item {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
 form {
     max-width: 100%;
 }
@@ -158,8 +180,17 @@ input {
     text-align: right;
 }
 
+body.dark input {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
 input::placeholder {
     color: var(--color-black);
+}
+
+body.dark input::placeholder {
+    color: var(--color-white);
 }
 
 select:focus-visible {
@@ -177,10 +208,18 @@ button.clear {
     background-color: var(--color-bg);
 }
 
+body.dark button.clear {
+    background-color: var(--color-gray);
+}
+
 button.equal {
     grid-column: 5;
     grid-row: 5/7;
     background-color: var(--color-bg);
+}
+
+body.dark button.equal {
+    background-color: var(--color-gray);
 }
 
 button.zero {
@@ -208,6 +247,10 @@ button.zero {
     cursor: pointer;
 }
 
+body.dark .theme-select {
+    background-color: var(--color-white);
+}
+
 .clear-btn {
     padding: var(--indent-s) var(--indent-m) var(--indent-s) var(--indent-m);
     width: 200px;
@@ -217,6 +260,10 @@ button.zero {
     font-size: var(--fz-m);
     line-height: var(--fz-m);
     cursor: pointer;
+}
+
+body.dark .clear-btn {
+    background-color: var(--color-white);
 }
 
 .history-operations {
@@ -287,6 +334,11 @@ button.zero {
         background: var(--color-gray);
         color: var(--color-white);
         cursor: pointer;
+    }
+
+    body.dark .item:not([disabled]):hover {
+        background-color: #969696;
+        color: var(--color-white);
     }
 }
 

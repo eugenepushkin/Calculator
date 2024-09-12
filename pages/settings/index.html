@@ -37,10 +37,10 @@
         </header>
         <main class="settings-main">
             <div class="theme">
-                <form>
+                <form name = 'theme-form'>
                     <select name="theme" class="theme-select">
-                        <option value="light-theme">Light theme</option>
-                        <option value="dark-theme">Dark theme</option>
+                        <option value="light-theme" class="light-theme">Light theme</option>
+                        <option value="dark-theme" class="dark-theme">Dark theme</option>
                     </select>
                 </form>
             </div>
@@ -53,6 +53,7 @@
     </div>
 
     <script src="/js/history.js" type="module"></script>
-    <script src="/js/clear.js"></script>
+    <script src="/js/clear.js" type="module"></script>
+    <script src="/js/theme.js" type="module"></script>
 </body>
 </html>

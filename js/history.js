@@ -2,6 +2,10 @@ import { emptyValue } from './constants/empty.js';
 import { emptyHistoryExpression } from './constants/expression.js'
 
 const historyOperations = document.querySelector('.history-operations');
+const body = document.querySelector('body');
+
+if (localStorage.theme === 'dark-theme') body.classList.add('dark');
+
 
 export const localStorageMethods = {
     get() {
@@ -10,6 +14,10 @@ export const localStorageMethods = {
 
     set(elem) {
         return localStorage.setItem(`operations`, `["${elem}"]`)
+    },
+
+    delete(elem) {
+        localStorage.removeItem(elem);
     }
 }
 
