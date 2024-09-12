@@ -237,11 +237,11 @@ function equal() {
 
     const res = rpnToNormal(revPolsNot);
 
-    if (localStorageMethods.get() == null) {
-        localStorageMethods.set(inputPlace.value);
+    if (localStorageMethods.get(`operations`) == null) {
+        localStorageMethods.set(`operations`, inputPlace.value);
 
         historyUpdate();
-    } else if (localStorageMethods.get() !== null) {
+    } else if (localStorageMethods.get(`operations`) !== null) {
         updateLocalStorage()
     
         historyUpdate();

@@ -12,6 +12,10 @@
     <title>Calculator</title>
 </head>
 <body>
+    <script>
+        const body = document.querySelector('body');
+        if (localStorage.theme === 'dark-theme') body.classList.add('dark');
+    </script>
     <div class="container">
         <header class="header">
             <h1>

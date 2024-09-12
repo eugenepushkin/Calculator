@@ -6,26 +6,29 @@ const body = document.querySelector('body');
 
 if (localStorage.theme === 'dark-theme') body.classList.add('dark');
 
-
 export const localStorageMethods = {
-    get() {
-        return localStorage.getItem('operations')
+    get(key) {
+        return localStorage.getItem(key)
     },
 
-    set(elem) {
-        return localStorage.setItem(`operations`, `["${elem}"]`)
+    set(key, elem) {
+        return localStorage.setItem(key, `["${elem}"]`)
+    },
+
+    setTheme(key, elem) {
+        return localStorage.setItem(key, elem)
     },
 
     delete(elem) {
-        localStorage.removeItem(elem);
+        return localStorage.removeItem(elem);
     }
 }
 
 export function historyUpdate() {
     if (localStorage.length === 0) {
         historyOperations.innerHTML = emptyHistoryExpression;
-    } else if (localStorageMethods.get() !== null) {
-        let operations = JSON.parse(localStorageMethods.get());
+    } else if (localStorageMethods.get(`operations`) !== null) {
+        let operations = JSON.parse(localStorageMethods.get(`operations`));
         historyOperations.innerHTML = emptyValue;
         for (let i = 0; i < operations.length; i++) {
             historyOperations.insertAdjacentHTML('beforeend', `<p>${operations[i]}</p>`)
