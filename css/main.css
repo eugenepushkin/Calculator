@@ -287,6 +287,10 @@ body.dark .clear-btn {
     background-color: var(--color-item-bg);
 }
 
+body.dark .burger-btn {
+    background-color: var(--color-black);
+}
+
 .menu {
     display: block;
     height: 0;
