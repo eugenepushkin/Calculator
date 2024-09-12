@@ -308,6 +308,10 @@ body.dark .burger-btn {
     font-size: var(--fz-m);
 }
 
+body.dark #burger-menu {
+    background-color: var(--color-white);
+}
+
 #expression-error {
     text-align: center;
     vertical-align: middle;
