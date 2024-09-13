@@ -22,7 +22,7 @@ html {
     --color-gray: #505050;
     --color-item-bg: #f1b32d;
     --color-burger-bg: #61616180;
-    --color-item-bg-dark: var(--color-item-bg-dark);
+    --color-item-bg-dark: #969696;
     --font-family-s: "Kanit", system-ui;
     --fz-s: 16px;
     --fz-m: 18px;
@@ -312,7 +312,7 @@ body.dark .burger-menu {
     background-color: var(--color-white);
 }
 
-#expression-error {
+.expression-error {
     text-align: center;
     vertical-align: middle;
     padding-top: var(--indent-l);
@@ -327,7 +327,7 @@ body.dark .burger-menu {
     background: var(--color-burger-bg);
 }
 
-#expression-error::backdrop {
+.expression-error::backdrop {
     background: var(--color-burger-bg);
 }
 
@@ -345,7 +345,7 @@ body.dark .burger-menu {
     }
 
     body.dark .item:not([disabled]):hover {
-        background-color: #969696;
+        background-color: var(--color-item-bg-dark);
         color: var(--color-white);
     }
 }
