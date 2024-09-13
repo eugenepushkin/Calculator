@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="icon" href="source/logo/calculator-svgrepo-com.svg">
+    <title>Calculator</title>
+</head>
+<body>
+    <script>
+        const body = document.querySelector('body');
+        if (localStorage.theme === 'dark-theme') body.classList.add('dark');
+    </script>
+    <div class="container">
+        <header class="header">
+            <h1>
+                Calculator
+            </h1>
+            <nav class="navigation">
+                <ul>
+                    <li><a href="#" class="nav-item active">Home</a></li>
+                    <li><a href="pages/settings/index.html" class="nav-item">Settings</a></li>
+                </ul>
+            </nav>
+            <button class="burger-btn" popovertarget="burger-menu">
+                <span class="menu"></span>
+                <span class="menu"></span>
+                <span class="menu"></span>
+            </button>
+            <div class="burger-menu" id="burger-menu" popover>
+                <ul>
+                    <li><a href="#" class="nav-item active">Home</a></li>
+                    <li><a href="pages/settings/index.html" class="nav-item">Settings</a></li>
+                </ul>
+            </div>
+        </header>
+        <main class="index-main">
+            <div class="input">
+                <form name="form">
+                    <input type="text" name="textview" placeholder="Enter expression" readonly>
+                </form>
+            </div>
+            <button class="item clear">C</button>
+            <button class="item plus-minus">&#177;</button>
+            <button class="item remainder">%</button>
+            <button class="item division">/</button>
+            <button class="item mult">*</button>
+            <button class="item seven">7</button>
+            <button class="item eight">8</button>
+            <button class="item nine">9</button>
+            <button class="item minus">-</button>
+            <button class="item clear-all">CE</button>
+            <button class="item four">4</button>
+            <button class="item five">5</button>
+            <button class="item six">6</button>
+            <button class="item plus">+</button>
+            <button class="item open">&#40;</button>
+            <button class="item one">1</button>
+            <button class="item two">2</button>
+            <button class="item three">3</button>
+            <button class="item equal">=</button>
+            <button class="item close">&#41;</button>
+            <button class="item zero">0</button>
+            <button class="item dot">.</button>
+            <div class="expression-error" id="expression-error" popover>
+                <p>
+                    Complete the expression!
+                </p>
+            </div>
+        </main>
+    </div>
+    <div class="container-history">
+        <aside>
+            <h2>
+                History
+            </h2>
+            <div class="history-operations">
+                <p>Loading...</p>
+            </div>
+        </aside>
+    </div>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
