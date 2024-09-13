@@ -12,6 +12,10 @@
     <title>Calculator</title>
 </head>
 <body>
+    <script>
+        const body = document.querySelector('body');
+        if (localStorage.theme === 'dark-theme') body.classList.add('dark');
+    </script>
     <div class="container">
         <header class="header">
             <h1>
@@ -28,7 +32,7 @@
                 <span class="menu"></span>
                 <span class="menu"></span>
             </button>
-            <div id="burger-menu" popover>
+            <div class="burger-menu" id="burger-menu" popover>
                 <ul>
                     <li><a href="#" class="nav-item active">Home</a></li>
                     <li><a href="pages/settings/index.html" class="nav-item">Settings</a></li>
@@ -63,7 +67,7 @@
             <button class="item close">&#41;</button>
             <button class="item zero">0</button>
             <button class="item dot">.</button>
-            <div id="expression-error" popover>
+            <div class="expression-error" id="expression-error" popover>
                 <p>
                     Complete the expression!
                 </p>

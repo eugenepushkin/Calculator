@@ -12,6 +12,10 @@
     <title>Calculator</title>
 </head>
 <body>
+    <script>
+        const body = document.querySelector('body');
+        if (localStorage.theme === 'dark-theme') body.classList.add('dark');
+    </script>
     <div class="container container-settings">
         <header class="header">
             <h1>
@@ -28,7 +32,7 @@
                 <span class="menu"></span>
                 <span class="menu"></span>
             </button>
-            <div id="burger-menu" popover>
+            <div class="burger-menu" id="burger-menu" popover>
                 <ul>
                     <li><a href="../../index.html" class="nav-item">Home</a></li>
                     <li><a href="#" class="nav-item active">Settings</a></li>
@@ -37,10 +41,10 @@
         </header>
         <main class="settings-main">
             <div class="theme">
-                <form>
+                <form name = 'themeForm'>
                     <select name="theme" class="theme-select">
-                        <option value="light-theme">Light theme</option>
-                        <option value="dark-theme">Dark theme</option>
+                        <option value="light-theme" class="light-theme">Light theme</option>
+                        <option value="dark-theme" class="dark-theme">Dark theme</option>
                     </select>
                 </form>
             </div>
@@ -53,6 +57,7 @@
     </div>
 
     <script src="/js/history.js" type="module"></script>
-    <script src="/js/clear.js"></script>
+    <script src="/js/clear.js" type="module"></script>
+    <script src="/js/theme.js" type="module"></script>
 </body>
 </html>
